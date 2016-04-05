@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<title>表单联动</title>
+	<script type="text/javascript" src="./src/jquery.js"></script>
+	<script type="text/javascript" src="./index.js"></script>
+	<link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+	<form>
+		<input type="radio" name="isStudent" value="is" id="choice1" class="choice1" checked="checked" >在校生</input>
+		<input type="radio" name="isStudent" value="not" id="choice2" class="choice2" >非在校生</input>
+		<br />
+		<div class="schoolClass">
+			<label>学校</label>
+			<select id="city" class="select">
+			</select>
+			<select id="school" class="select">
+			</select>
+		</div>
+		
+		<div class="company">
+			<label>就业单位</label>
+			<input type="text" class="input-company"></input>
+		</div>
+	</form>
+</body>
+</html>

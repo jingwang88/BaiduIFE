@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<title>task-29单项表单验证</title>
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+	<script type="text/javascript" src="./index.js"></script>
+	<style type="text/css">
+		.container {
+			width: 800px;
+			margin: 200px auto;
+		}
+		label {
+			font-size: 20px;
+			font-family: "微软雅黑";
+		}
+		input {
+			border: 2px solid #999;
+			height: 25px;
+			width: 500px;
+		}
+		button {
+			font-size: 25px;
+			height: 35px;
+			width: 100px;
+		}
+		span {
+			position: relative;
+			left: 60px;
+			display: block;
+			font-size: 18px;
+			color: #999;
+			font-family: "微软雅黑";
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<label for="input">名称&nbsp&nbsp&nbsp</label>
+		<input type="text" id="input"></input>
+		<button id="btn">验证</button>
+		<span id="warning">必填，长度为4~16个字符</span>
+	</div>
+</body>
+</html>

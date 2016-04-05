@@ -1,0 +1,34 @@
+form {
+	width: 800px;
+	margin: 100px auto;
+}
+.choice2 {
+	margin-left: 250px;
+}
+#city  {
+	width: 180px;
+	height: 30px;
+	border-radius: 5px;
+	margin-left: 20px;
+}
+.schoolClass {
+	padding-top: 50px;
+}
+#school {
+	width: 250px;
+	height: 30px;
+	border-radius: 5px;
+	margin-left: 70px;
+}
+.company {
+	margin-left: -33px;
+	padding-top: 50px;
+	display: none;
+}
+.input-company {
+	width: 508px;
+	height: 30px;
+	border-radius: 5px;
+	margin-left: 20px;
+	border: 1px solid #999;
+}

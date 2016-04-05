@@ -1,0 +1,101 @@
+/*填错或者为空时*/
+input.warning {
+	border-color: red;
+}
+
+/*填写正确时*/
+input.correct {
+	border-color:  rgb(95, 185, 72);
+}
+
+/*名字栏*/
+.name.default:after {
+	content: "必填，长度为4~16个字符";
+	color: #999;
+}
+.name.null:after {
+	content: "名称不能为空";
+	color: red;
+}
+.name.wrong:after {
+	content: "名称格式不对";
+	color: red;
+}
+.name.correct:after {
+	content: "名称可用";
+	color:  rgb(95, 185, 72);
+}
+
+
+/*密码栏*/
+.password.default:after {
+	content: "密码由4~16位字母、数字、符号组成";
+	color: #999;
+}
+.password.null:after {
+	content: "密码不能为空";
+	color: red;
+}
+.password.wrong:after {
+	content: "密码格式不对";
+	color: red;
+}
+.password.correct:after {
+	content: "密码可用";
+	color:  rgb(95, 185, 72);
+}
+
+/*确认密码*/
+.repassword.default:after {
+	content: "再一次输入您的密码";
+	color: #999;
+}
+.repassword.null:after {
+	content: "密码不能为空";
+	color: red;
+}
+.repassword.wrong:after {
+	content: "密码输入不一致";
+	color: red;
+}
+.repassword.correct:after {
+	content: "密码输入一致";
+	color:  rgb(95, 185, 72);
+}
+
+/*邮箱*/
+.email.default:after {
+	content: "请输入您的邮箱";
+	color: #999;
+}
+.email.null:after {
+	content: "邮箱不能为空";
+	color: red;
+}
+.email.wrong:after {
+	content: "邮箱格式错误";
+	color: red;
+}
+.email.correct:after {
+	content: "邮箱格式正确";
+	color:  rgb(95, 185, 72);
+}
+
+
+/*手机号*/
+.phone.default:after {
+	content: "请输入您的手机号";
+	color: #999;
+}
+.phone.null:after {
+	content: "手机号不能为空";
+	color: red;
+}
+.phone.wrong:after {
+	content: "手机号格式不正确";
+	color: red;
+}
+.phone.correct:after {
+	content: "手机号格式正确";
+	color:  rgb(95, 185, 72);
+}

@@ -1,0 +1,54 @@
+/*---------------  确定高度垂直水平居中 -------------------------*/
+/*#box {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -100px 0 0 -200px;
+	width: 400px;
+	height: 200px;
+	background-color: #ccc;
+}
+#rec1,
+#rec2 {
+	width: 50px;
+	height: 50px;
+	background-color: #fc0;
+}
+#rec1 {
+	border-radius: 0 0 100% 0;
+}
+#rec2 {
+	position: absolute;
+	left: 350px;
+	top: 150px;
+	border-radius: 100% 0 0 0;
+}*/
+/*---------------  不确定高度垂直水平居中  --------------------*/
+#box {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 400px;
+	min-height: 300px;
+	margin: 0 0 0 -200px;
+	transform: translateY(-50%);
+	background-color: #ccc;
+}
+#rec1,
+#rec2 {
+	width: 50px;
+	height: 50px;
+	background-color: #fc0;
+}
+#rec1 {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 0 0 100% 0;
+}
+#rec2 {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	border-radius: 100% 0 0 0;
+}

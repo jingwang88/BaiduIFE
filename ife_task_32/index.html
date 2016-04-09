@@ -18,24 +18,56 @@
 			width: 100px;
 			height: 30px;
 		}
+		#formList {
+			width: 400px;
+			margin: 30px auto;
+		}
+		.wraper {
+			float: right;
+			margin-bottom: 20px;
+
+		}
+		.wraper label {
+			font-size: 18px;
+		}
+		.wraper input {
+			margin-left: 10px;
+			width: 300px;
+			height: 20px;
+		}
+		.wraper span {
+			display: block;
+			margin-left: 100px;
+			font-size: 14px;
+			color: #999;
+		}
+		.submitBtn {
+			width: 80px;
+			height: 30px;
+			float: right;
+		}
 	</style>
 </head>
 <body>
 	<div id="container">
 		<form class="choice">
+			<!-- 选择要生成的表单 -->
 			<div class="form-choice">
 				<label>选择要创建的表单</label>
-				<input type="checkbox" name="formchoice">名称</input>
-				<input type="checkbox" name="formchoice">密码</input>
-				<input type="checkbox" name="formchoice">邮箱</input>
-				<input type="checkbox" name="formchoice">号码</input>
+				<input type="checkbox" name="formchoice" value="name">名称</input>
+				<input type="checkbox" name="formchoice" value="password">密码</input>
+				<input type="checkbox" name="formchoice" value="email">邮箱</input>
+				<input type="checkbox" name="formchoice" value="phone">号码</input>
 			</div>
-			<div class="style-choice">
+			<!-- <div class="style-choice">
 				<label>选择表单的样式</label>
 				<input type="radio" name="stylechoice">样式一</input>
 				<input type="radio" name="stylechoice">样式二</input>
-			</div>
+			</div> -->
 			<input type="button" id="geneBtn" value="生成表单"></input>
+		</form>
+		<!-- 生成的表单 -->
+		<form id="formList">
 		</form>
 	</div>
 </body>

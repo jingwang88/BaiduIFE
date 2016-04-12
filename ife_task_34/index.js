@@ -9,15 +9,12 @@ SmallBlock.prototype = {
 		this.direction = directions[this.index];
 		this.Position = options.Position;
 		this.smallBlock= options.smallBlock;
-		console.log(this.Position);
 	},
-	// 根据朝向向前移动一格
 	move: function (direction) {
 		var beforeTr = document.getElementsByTagName("tr")[this.Position.y];
 		var beforTd = beforeTr.getElementsByTagName("td")[this.Position.x];
 		beforTd.innerHTML = "";
 		beforTd.className = null;
-		console.log(beforTd.className);
 		switch (direction) {
 			case "left":
 				this.Position.x>1 && this.Position.x--;
@@ -40,21 +37,48 @@ SmallBlock.prototype = {
 		console.log(td.className);
 		 
 	},
-	// 根据输入采取不同动作
 	action: function (inputValue) {
 		switch (inputValue) {
 			case "GO":
-				console.log("inner go");
-				console.log(this.direction);
 				this.move(this.direction);
 				break;
+			case "TRA LEF":
+				this.move("left");
+				break;
+			case "TRA TOP":
+				this.move("top");
+				break;
+			case "TRA RIG":
+				this.move("right");
+				break;
+			case "TRA BOT":
+				this.move("bottom");
+				break;
+			case "MOV LEF":
+				this.turn("left");
+				this.move("left");
+				break;
+			case "MOV TOP":
+				this.turn("top");
+				this.move("top");
+				break;
+			case "MOV RIG":
+				this.turn("right");
+				this.move("right");
+				break;
+			case "MOV BOT":
+				this.turn("bottom");
+				this.move("bottom");
+				break;
 			case "TUN LEF":
+				this.turn("left");
 				this.index>0 ? this.index-- : this.index=3;
 				this.direction = directions[this.index];
 				console.log(this.direction);
 				this.turn(this.direction);
 				break;
 			case "TUN RIG":
+				this.turn("right");
 				this.index<3 ? this.index++ : this.index=0;
 				this.direction = directions[this.index];
 				this.turn(this.direction);
@@ -66,7 +90,6 @@ SmallBlock.prototype = {
 				break;
 		}
 	},
-	// 转向实际位置
 	turn: function (direction) {
 		switch (this.direction) {
 			case "top"  :
@@ -95,8 +118,7 @@ SmallBlock.prototype = {
 }
 window.onload = function () {
 	console.log("HELLO");
-	var container = document.querySelector(".block");
-	var block = document.querySelector(".block div");
+	var block = document.querySelector(".block");
 	var btn = document.getElementById("btn");
 	var input = document.getElementById("inputCommand");
 	var options = {
@@ -114,6 +136,5 @@ window.onload = function () {
 		var inputValue = input.value.toUpperCase();
 		console.log(inputValue);
 		smallBlock.action(inputValue);
-
 	}
 }

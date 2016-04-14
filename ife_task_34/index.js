@@ -1,5 +1,5 @@
+/*可能不兼容IE*/
 var directions = ["top", "right", "bottom", "left"]
-
 var SmallBlock = function (options) {
 	this.initialize.call(this, options);
 }
@@ -9,48 +9,85 @@ SmallBlock.prototype = {
 		this.direction = directions[this.index];
 		this.Position = options.Position;
 		this.smallBlock= options.smallBlock;
+		this.turnFlag = options.turnFlag;
 	},
+	// para direction 代表屏幕的上下左右方向
 	move: function (direction) {
-		tr = document.querySelectorAll("tr")[this.Position.y];
-		td = tr.querySelectorAll("td")[this.Position.x];
-		td.removeChild(this.smallBlock);
+		var n = 0;
 		switch (direction) {
 			case "left":
 				if (this.Position.x>1) {
 					this.Position.x--;
-					this.setProperty("transition", "transform 1s");
 					this.Position.left -= 40;
-					this.setProperty("transform", "translateX("+this.Position.left+")");
-					console.log(this.Position);
+					// 判断是 TRA 还是 MOV 
+					if (!this.turnFlag) {
+						this.setProperty("transition", "left 1s");
+						this.smallBlock.style.left = this.Position.left + "px";
+					} else {
+						n = parseInt(this.Position.rotate/360);
+						// 过渡
+						this.setProperty("transition", "left 1s, transform 1s");
+						this.Position.rotate = n*360-90;
+						this.smallBlock.style.left = this.Position.left + "px";
+						this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
+						this.turnFlag = false;
+					}
 				}
 				break;
 			case "right":
 				if (this.Position.x<10) {
 					this.Position.x++;
-					this.setProperty("Transition", "right 1s");
 					this.Position.left += 40;
-					this.smallBlock.style.left = this.Position.left + "px";
-					console.log(this.Position);
+					if (!this.turnFlag) {
+						this.setProperty("transition", "left 1s");
+						this.smallBlock.style.left = this.Position.left + "px";
+					} else {
+						n = parseInt(this.Position.rotate/360);
+						this.setProperty("transition", "left 1s, transform 1s");
+						this.Position.rotate = n*360+90;
+						this.smallBlock.style.left = this.Position.left + "px";
+						this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
+						this.turnFlag = false;
+					}
 				}
 				break;
 			case "top": 
 				if (this.Position.y>1) {
-
 					this.Position.y--;
-					console.log(this.Position);
+					this.Position.top -= 40;
+					if (!this.turnFlag) {
+						this.setProperty("transition", "top 1s");
+						this.smallBlock.style.top = this.Position.top+ "px";
+					} else {
+						n = parseInt(this.Position.rotate/360);
+						this.setProperty("transition", "top 1s, transform 1s");
+						this.Position.rotate = n*360;
+						this.smallBlock.style.top = this.Position.top + "px";
+						this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
+						this.turnFlag = false;
+					}
 				}
 				break;
 			case "bottom":
 				if (this.Position.y<10) {
 					this.Position.y++;
-					console.log(this.Position);
+					this.Position.top += 40;
+					if (!this.turnFlag) {
+						this.setProperty("transition", "top 1s");
+						this.smallBlock.style.top = this.Position.top+ "px";
+					} else {
+						n = parseInt(this.Position.rotate/360);
+						this.setProperty("transition", "top 1s, transform 1s");
+						this.Position.rotate = n*360+180;
+						this.smallBlock.style.top = this.Position.top + "px";
+						this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
+						this.turnFlag = false;
+					}
 				}
 				break;
 		}
-		tr = document.querySelectorAll("tr")[this.Position.y];
-		td = tr.querySelectorAll("td")[this.Position.x];
-		td.appendChild(this.smallBlock);
 	},
+	// 根据不同指令采取不同动作
 	action: function (inputValue) {
 		switch (inputValue) {
 			case "GO":
@@ -69,56 +106,68 @@ SmallBlock.prototype = {
 				this.move("bottom");
 				break;
 			case "MOV LEF":
-				this.turn("left");
+				this.turnFlag = true;
 				this.move("left");
+				this.index = 3;
+				this.direction = directions[this.index];
 				break;
 			case "MOV TOP":
-				this.turn("top");
+				this.turnFlag = true;
 				this.move("top");
+				this.index = 0;
+				this.direction = directions[this.index];
 				break;
 			case "MOV RIG":
-				this.turn("right");
+				this.turnFlag = true;
 				this.move("right");
+				this.index = 1;
+				this.direction = directions[this.index];
 				break;
 			case "MOV BOT":
-				this.turn("bottom");
+				this.turnFlag = true;
 				this.move("bottom");
+				this.index = 2;
+				this.direction = directions[this.index];
 				break;
 			case "TUN LEF":
+				this.turn("left");
 				this.index>0 ? this.index-- : this.index=3;
 				this.direction = directions[this.index];
-				this.turn(this.direction);
 				break;
 			case "TUN RIG":
+				this.turn("right");
 				this.index<3 ? this.index++ : this.index=0;
 				this.direction = directions[this.index];
-				this.turn(this.direction);
 				break;
 			case "TUN BAC":
+				this.turn("back");
 				this.index<2 ? this.index+=2 : (this.index==2 ? this.index=0 : this.index=1);
 				this.direction = directions[this.index];
-				this.turn(this.direction);
 				break;
 		}
 	},
+	// para direction 代表相对小块目前方向的左右后方向
 	turn: function (direction) {
-		switch (this.direction) {
-			case "top"  :
-				this.setProperty("transform", "rotate(0deg)");
-				break;
+		switch (direction) {
 			case "left" :
-				this.setProperty("transform", "rotate(-90deg)");
+				this.Position.rotate = this.Position.rotate - 90;
+				this.setProperty("transition", "transform 1s");
+				this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
 				break;
 			case "right":
-				this.setProperty("transform", "rotate(90deg)");
+				this.Position.rotate = this.Position.rotate + 90;
+				this.setProperty("transition", "transform 1s");
+				this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
 				break;
-			case "bottom":
-				this.setProperty("transform", "rotate(-180deg)");
+			case "back":
+				this.Position.rotate = this.Position.rotate + 180;
+				this.setProperty("transition", "transform 1s");
+				this.setProperty("transform", "rotate("+ this.Position.rotate +"deg)");
 				break;
 		}
 	},
 	setProperty: function (property, value) {
-		var pre = ["webkit", "ms", "moz", "o"];
+		var pre = ["-webkit-", "-ms-", "-moz-", "-o-"];
 		for(var i=0; i<pre.length; i++) {
 				this.smallBlock.style[pre[i]+property] = value;
 		}
@@ -126,7 +175,6 @@ SmallBlock.prototype = {
 
 }
 window.onload = function () {
-	console.log("HELLO");
 	var block = document.querySelector(".block");
 	var btn = document.getElementById("btn");
 	var input = document.getElementById("inputCommand");
@@ -136,16 +184,17 @@ window.onload = function () {
 			x: 5,
 			y: 5,
 			left: 0,
-			right: 0
+			top: 0,
+			rotate: 0
 		},
 		index: 0,// 方向index
-		smallBlock: block
+		smallBlock: block,
+		turnFlag: false
 	}
 	var smallBlock = new SmallBlock(options);
 
 	btn.onclick = function () {
-		console.log("onclick");
-		var inputValue = input.value.toUpperCase();
+		var inputValue = input.value.toUpperCase().trim();
 		console.log(inputValue);
 		smallBlock.action(inputValue);
 	}

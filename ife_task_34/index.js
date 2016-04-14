@@ -1,41 +1,55 @@
 var directions = ["top", "right", "bottom", "left"]
-var pre = ["-webkit-", "-ms-", "-moz-", "-o-"];
+
 var SmallBlock = function (options) {
 	this.initialize.call(this, options);
 }
 SmallBlock.prototype = {
 	initialize: function (options) {
-		this.index = options.index;
+		this.index = options.index;                                                                            
 		this.direction = directions[this.index];
 		this.Position = options.Position;
 		this.smallBlock= options.smallBlock;
 	},
 	move: function (direction) {
-		var beforeTr = document.getElementsByTagName("tr")[this.Position.y];
-		var beforTd = beforeTr.getElementsByTagName("td")[this.Position.x];
-		beforTd.innerHTML = "";
-		beforTd.className = null;
+		tr = document.querySelectorAll("tr")[this.Position.y];
+		td = tr.querySelectorAll("td")[this.Position.x];
+		td.removeChild(this.smallBlock);
 		switch (direction) {
 			case "left":
-				this.Position.x>1 && this.Position.x--;
+				if (this.Position.x>1) {
+					this.Position.x--;
+					this.setProperty("transition", "transform 1s");
+					this.Position.left -= 40;
+					this.setProperty("transform", "translateX("+this.Position.left+")");
+					console.log(this.Position);
+				}
 				break;
 			case "right":
-				this.Position.x<10 && this.Position.x++;
+				if (this.Position.x<10) {
+					this.Position.x++;
+					this.setProperty("Transition", "right 1s");
+					this.Position.left += 40;
+					this.smallBlock.style.left = this.Position.left + "px";
+					console.log(this.Position);
+				}
 				break;
 			case "top": 
-				this.Position.y>1 && this.Position.y--;
+				if (this.Position.y>1) {
+
+					this.Position.y--;
+					console.log(this.Position);
+				}
 				break;
 			case "bottom":
-				this.Position.y<10 && this.Position.y++;
+				if (this.Position.y<10) {
+					this.Position.y++;
+					console.log(this.Position);
+				}
 				break;
 		}
-		console.log(this.Position)
-		var tr = document.getElementsByTagName("tr")[this.Position.y];
-		var td = tr.getElementsByTagName("td")[this.Position.x];
+		tr = document.querySelectorAll("tr")[this.Position.y];
+		td = tr.querySelectorAll("td")[this.Position.x];
 		td.appendChild(this.smallBlock);
-		td.className = "block";
-		console.log(td.className);
-		 
 	},
 	action: function (inputValue) {
 		switch (inputValue) {
@@ -71,14 +85,11 @@ SmallBlock.prototype = {
 				this.move("bottom");
 				break;
 			case "TUN LEF":
-				this.turn("left");
 				this.index>0 ? this.index-- : this.index=3;
 				this.direction = directions[this.index];
-				console.log(this.direction);
 				this.turn(this.direction);
 				break;
 			case "TUN RIG":
-				this.turn("right");
 				this.index<3 ? this.index++ : this.index=0;
 				this.direction = directions[this.index];
 				this.turn(this.direction);
@@ -93,25 +104,23 @@ SmallBlock.prototype = {
 	turn: function (direction) {
 		switch (this.direction) {
 			case "top"  :
-				for(var i=0; i<pre.length; i++) {
-					this.smallBlock.style[pre[i]+"transform"] = "rotate(0deg) translate(0, 0)";
-				}
+				this.setProperty("transform", "rotate(0deg)");
 				break;
 			case "left" :
-				for(var i=0; i<pre.length; i++) {
-					this.smallBlock.style[pre[i]+"transform"] = "rotate(-90deg) translate(-15px, -15px)";
-				}
+				this.setProperty("transform", "rotate(-90deg)");
 				break;
 			case "right":
-				for(var i=0; i<pre.length; i++) {
-					this.smallBlock.style[pre[i]+"transform"] = "rotate(90deg) translate(15px, -15px)";
-				}
+				this.setProperty("transform", "rotate(90deg)");
 				break;
 			case "bottom":
-				for(var i=0; i<pre.length; i++) {
-					this.smallBlock.style[pre[i]+"transform"] = "rotate(-180deg) translateY(-30px)";
-				}
+				this.setProperty("transform", "rotate(-180deg)");
 				break;
+		}
+	},
+	setProperty: function (property, value) {
+		var pre = ["webkit", "ms", "moz", "o"];
+		for(var i=0; i<pre.length; i++) {
+				this.smallBlock.style[pre[i]+property] = value;
 		}
 	}
 
@@ -121,10 +130,13 @@ window.onload = function () {
 	var block = document.querySelector(".block");
 	var btn = document.getElementById("btn");
 	var input = document.getElementById("inputCommand");
+	var tr, td;
 	var options = {
 		Position: {
 			x: 5,
-			y: 5
+			y: 5,
+			left: 0,
+			right: 0
 		},
 		index: 0,// 方向index
 		smallBlock: block

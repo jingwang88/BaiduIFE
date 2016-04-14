@@ -1,0 +1,42 @@
+table {
+	position: relative;
+	width: 440px;
+	height: 440px;
+	border-collapse: collapse;
+	font-family: "Microsoft YaHei";
+	text-align: center;
+}
+
+table td {
+	border: 1px solid #999;
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+}
+
+table tr:first-child td {
+	border-width: 0px;
+}
+
+table td:first-child {
+	border-width: 0px;
+}
+
+form {
+	margin-left: 45px;
+	margin-top: 10px;
+}
+
+.block {
+	width: 40px;
+	height: 40px;
+	background-color: red;
+}
+
+.block div {
+	width: 40px;
+	height: 10px;
+	background-color: blue;
+}
+
+

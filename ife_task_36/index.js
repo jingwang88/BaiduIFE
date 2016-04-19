@@ -244,9 +244,37 @@ SmallBlock.prototype = {
 	},
 	// 移动算法
 	movTo:function (forwardPos) {
-		var x = parseInt(forwardPos.split[','][0]);
-		var y = parseInt(forwardPos.split[','][1]);
-		console.log("x:"+x+"y:"+y);
+		var openList = [];
+		var closeList = [];
+		for (var i=-1; i<2; i++) {
+			for (var j=-1; j<2; j++) {
+				if (closeList.join(",").index((this.Position.x+i) + "," + (this.Position.y+j)) < 0 
+					&& !isCollision(this.Position.x+i, this.Position.y+j)) {
+					openList.push((this.Position.x+i) + "," + (this.Position.y+j));
+				}
+			}
+		}
+		closeList.push(this.Position.x + "," + this.Position.y);
+		var difficulties = this.getDiff(openList[0], forwardPos);
+		var lowDiff = openList[0];
+		for(var k=1; k<openList.length; k++) {
+			var diff = this.getDiff(openList[k], forwardPos);
+			if (diff < difficulties) {
+				difficulties = diff;
+				lowDiff = openList[k];
+			}
+		}
+		
+
+	},
+	getDiff: function (pos1, pos2) {
+		var x1 = parseInt(pos1.split(',')[0]);
+		var y1 = parseInt(pos1.split(',')[1]);
+		var x2 = parseInt(pos2.split(',')[0]);
+		var y2 = parseInt(pos2.split(',')[1]);
+		var diffX = Math.abs(x1 - x2);
+		var diffY = Math.abs(y1 - y2);
+		return diffX+diffY;
 	}
 	setProperty: function (property, value) {
 		var pre = ["-webkit-", "-ms-", "-moz-", "-o-"];

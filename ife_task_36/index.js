@@ -15,6 +15,7 @@ SmallBlock.prototype = {
 		this.brushColorIndex = 0;
 		this.forwardPos = [];// 将要移向的位置
 		this.forwardPosIndex = 0;
+		this.preCommands = [];
 	},
 	// para direction 代表屏幕的上下左右方向
 	move: function (direction) {
@@ -167,11 +168,6 @@ SmallBlock.prototype = {
 					this.brushColorIndex++;
 				}
 				break;
-			case "MOV TO":
-				this.movTo(this.forwardPos[this.forwardPosIndex]);
-				forwardPosIndex++;
-				break;
-
 		}
 	},
 	// para direction 代表相对小块目前方向的左右后方向
@@ -246,26 +242,45 @@ SmallBlock.prototype = {
 	movTo:function (forwardPos) {
 		var openList = [];
 		var closeList = [];
-		for (var i=-1; i<2; i++) {
-			for (var j=-1; j<2; j++) {
-				if (closeList.join(",").index((this.Position.x+i) + "," + (this.Position.y+j)) < 0 
-					&& !isCollision(this.Position.x+i, this.Position.y+j)) {
-					openList.push((this.Position.x+i) + "," + (this.Position.y+j));
+		var flag = true;
+		console.log("forwardPos"+forwardPos);
+		var lowDiff = this.Position.x+","+this.Position.y;
+		while (flag && lowDiff !== forwardPos) { 
+			var x = parseInt(lowDiff.split(",")[0]);
+			var y = parseInt(lowDiff.split(",")[1]);
+			for (var i=-1; i<2; i++) {
+				for (var j=-1; j<2; j++) {
+					if (closeList.join().indexOf((x+i) + "," + (y+j)) < 0 && !this.isCollision(x+i, y+j)) {
+						openList.push((x+i) + "," + (y+j));
+					}
 				}
 			}
-		}
-		closeList.push(this.Position.x + "," + this.Position.y);
-		var difficulties = this.getDiff(openList[0], forwardPos);
-		var lowDiff = openList[0];
-		for(var k=1; k<openList.length; k++) {
-			var diff = this.getDiff(openList[k], forwardPos);
-			if (diff < difficulties) {
-				difficulties = diff;
-				lowDiff = openList[k];
+			console.log(openList);
+			console.log(lowDiff);
+			// closeList.push(x + "," + y);
+			var difficulties = this.getDiff(openList[0], forwardPos);
+			var tempDiff = lowDiff;
+			lowDiff = openList[0];
+			for(var k=1; k<openList.length; k++) {
+				console.log(openList[k]);
+				var diff = this.getDiff(openList[k], forwardPos);
+				console.log(diff);
+				if (diff < difficulties) {
+					difficulties = diff;
+					lowDiff = openList[k];
+				}
+				closeList.push(openList[k]);
+			}
+			openList = [];
+			console.log("lowDiff"+lowDiff);
+			if (lowDiff === forwardPos) {
+				this.goTo(tempDiff, lowDiff);
+				flag = false;
+			} else {
+				console.log("goTo");
+				this.goTo(tempDiff, lowDiff);
 			}
 		}
-		
-
 	},
 	getDiff: function (pos1, pos2) {
 		var x1 = parseInt(pos1.split(',')[0]);
@@ -275,7 +290,39 @@ SmallBlock.prototype = {
 		var diffX = Math.abs(x1 - x2);
 		var diffY = Math.abs(y1 - y2);
 		return diffX+diffY;
-	}
+	},
+	goTo: function (pos1, pos2) {
+		console.log("goTo");
+		var x1 = parseInt(pos1.split(",")[0]);
+		var y1 = parseInt(pos1.split(",")[1]);
+		var x2 = parseInt(pos2.split(",")[0]);
+		var y2 = parseInt(pos2.split(",")[1]);
+		var dx = x1 - x2;
+		var dy = y1 - y2;
+		if (dx == 0) {
+			if (dy > 0) {
+				this.preCommands.push("TRA TOP");
+			} else {
+				this.preCommands.push("TRA BOT");
+			}
+		} else if (dx > 0) {
+			if (dy > 0) {
+				this.preCommands.push("TRA LEF");
+				this.preCommands.push("TRA TOP");
+			} else {
+				this.preCommands.push("TRA LEF");
+				this.preCommands.push("TRA BOT");
+			}
+		} else {
+			if (dy > 0) {
+				this.preCommands.push("TRA RIG");
+				this.preCommands.push("TRA TOP");
+			} else {
+				this.preCommands.push("TRA RIG");
+				this.preCommands.push("TRA BOT");
+			}
+		}
+	},
 	setProperty: function (property, value) {
 		var pre = ["-webkit-", "-ms-", "-moz-", "-o-"];
 		for(var i=0; i<pre.length; i++) {
@@ -312,7 +359,7 @@ window.onload = function () {
 	var isCommandCorrect = true;
 	var reg = /\d{1}/;
 	var regColor = /^BRU (#[0-9a-fA-F]{3})|(#[0-9a-fA-F]{6})|(rgb\(([0-9]|[1-9][0-9]|[1-2][0-5][0-9])\, ([0-9]|[1-9][0-9]|[1-2][0-5][0-9])\, ([0-9]|[1-9][0-9]|[1-2][0-5][0-9])\))$/i;
-	var regMovTo = /^MOV TO \d{1}, \d{1}/i;
+	var regMovTo = /^MOV TO \d{1}\,\d{1}/i;
 	// 测试代码格式合法性
 	function checkFormat (str) {
 		for (var i=0; i<commandsList.length; i++) {
@@ -328,9 +375,10 @@ window.onload = function () {
 	}
 	var smallBlock = new SmallBlock(options);
 	btn.onclick = function () {
+		smallBlock.preCommands = [];
 		if (isCommandCorrect) {
 			// 将要执行的指令集
-			var preCommands = [];
+			var preCommands = smallBlock.preCommands;
 			var index = 0;
 			for (var i=0; i<commands.length; i++) {
 				var number = commands[i].slice(-1);
@@ -338,13 +386,13 @@ window.onload = function () {
 				if (regColor.test(commands[i])) {
 					smallBlock.brushColor.push(commands[i].slice(4));
 					preCommands.push("BRU");
-				} if (reg.test(number)) {
+				} else if (regMovTo.test(commands[i])) {
+					console.log("move to");
+					smallBlock.movTo(commands[i].slice(7));
+				} else if (reg.test(number)) {
 					for (var j=0; j<number; j++) {
 						preCommands.push(command);
 					}
-				} else if (regMovTo.test(commands[i])) {
-					smallBlock.forwardPos.push(commands[i].slice(8));
-					preCommands.push("MOV TO");
 				} else{
 					preCommands.push(commands[i]);
 				}

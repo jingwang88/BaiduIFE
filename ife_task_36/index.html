@@ -166,5 +166,31 @@
 			<textarea id="inputCommand"></textarea>
 		</div>
 	</form>
+	<div class="notice-board">
+		<h3>指令格式提醒</h3>
+		<ol>
+			<li>
+				GO(向蓝色边所面向的方向前进一格) TUN LEF(逆时针旋转90度) TUN RIG(顺时针旋转90度) TUN BAC(旋转180度)
+			</li>
+			<li>
+				TRA LEF(向屏幕的左侧移动一格，方向不变)<br />
+				TRA TOP(向屏幕的上面移动一格，方向不变)<br />
+				TRA RIG(向屏幕的右侧移动一格，方向不变)<br />
+				TRA BOT(向屏幕的下面移动一格，方向不变)<br />
+				MOV LEF(方向转向屏幕左侧，并向屏幕的左侧移动一格)<br />
+				MOV TOP(方向转向屏幕上面，向屏幕的上面移动一格)<br />
+				MOV RIG(方向转向屏幕右侧，向屏幕的右侧移动一格)<br />
+				MOV BOT(方向转向屏幕下面，向屏幕的下面移动一格)<br />
+			</li>
+			<li>
+				可以在上述指令后面添加数字代表执行次数(例如TRA LEF 3\ MOV LEF 2\ GO 3)
+			</li>
+			<li>
+				BUILD(前方块面对的方向前修建一格墙壁)<br/>
+				BRU color(粉刷的指令,color是一个字符串)<br/>
+				MOV TO x,y(方块从当前位置移动到坐标为x，y的地方)
+			</li>
+		</ol>
+	</div>
 </body>
 </html>

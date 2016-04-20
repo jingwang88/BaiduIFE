@@ -163,7 +163,6 @@ SmallBlock.prototype = {
 					console.log("错误，这里没有墙，无法粉刷");
 				} else {
 					var td = this.getTd(this.isNoWall().x, this.isNoWall().y);
-					console.log(this.brushColor[this.brushColorIndex]);
 					td.style.backgroundColor = this.brushColor[this.brushColorIndex];
 					this.brushColorIndex++;
 				}
@@ -196,7 +195,6 @@ SmallBlock.prototype = {
 		this.wall.push(x+","+y);
 	},
 	getTd: function (x, y) {
-		console.log(x+":"+y);
 		var tr = document.getElementsByTagName("tr")[y];
 		var td = tr.getElementsByTagName("td")[x];
 		return td;
@@ -229,8 +227,6 @@ SmallBlock.prototype = {
 				wallPositonY++;
 				break;
 		}
-		console.log("xy");
-		console.log(wallPositonX+":"+wallPositonY);
 		for (var i=0; i<len+1; i++) {
 			if (this.wall[i] === wallPositonX+"," +wallPositonY) {
 				return {x:wallPositonX, y:wallPositonY, b:false};
@@ -243,7 +239,6 @@ SmallBlock.prototype = {
 		var openList = [];
 		var closeList = [];
 		var flag = true;
-		console.log("forwardPos"+forwardPos);
 		var lowDiff = this.Position.x+","+this.Position.y;
 		while (flag && lowDiff !== forwardPos) { 
 			var x = parseInt(lowDiff.split(",")[0]);
@@ -255,16 +250,12 @@ SmallBlock.prototype = {
 					}
 				}
 			}
-			console.log(openList);
-			console.log(lowDiff);
 			// closeList.push(x + "," + y);
 			var difficulties = this.getDiff(openList[0], forwardPos);
 			var tempDiff = lowDiff;
 			lowDiff = openList[0];
 			for(var k=1; k<openList.length; k++) {
-				console.log(openList[k]);
 				var diff = this.getDiff(openList[k], forwardPos);
-				console.log(diff);
 				if (diff < difficulties) {
 					difficulties = diff;
 					lowDiff = openList[k];
@@ -272,12 +263,10 @@ SmallBlock.prototype = {
 				closeList.push(openList[k]);
 			}
 			openList = [];
-			console.log("lowDiff"+lowDiff);
 			if (lowDiff === forwardPos) {
 				this.goTo(tempDiff, lowDiff);
 				flag = false;
 			} else {
-				console.log("goTo");
 				this.goTo(tempDiff, lowDiff);
 			}
 		}
@@ -292,7 +281,6 @@ SmallBlock.prototype = {
 		return diffX+diffY;
 	},
 	goTo: function (pos1, pos2) {
-		console.log("goTo");
 		var x1 = parseInt(pos1.split(",")[0]);
 		var y1 = parseInt(pos1.split(",")[1]);
 		var x2 = parseInt(pos2.split(",")[0]);
@@ -387,7 +375,6 @@ window.onload = function () {
 					smallBlock.brushColor.push(commands[i].slice(4));
 					preCommands.push("BRU");
 				} else if (regMovTo.test(commands[i])) {
-					console.log("move to");
 					smallBlock.movTo(commands[i].slice(7));
 				} else if (reg.test(number)) {
 					for (var j=0; j<number; j++) {
@@ -397,7 +384,6 @@ window.onload = function () {
 					preCommands.push(commands[i]);
 				}
 			}
-			console.log(preCommands);
 			var actionTimer = setInterval(function () {
 				if (index < preCommands.length) {
 					index++;

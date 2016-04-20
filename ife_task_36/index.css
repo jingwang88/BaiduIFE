@@ -67,5 +67,11 @@ form {
 	width: 20px;
 	height: 20px;
 }
-
-
+.notice-board {
+	position: absolute;
+	left: 600px;
+	top: 0;
+	width: 500px;
+	height: 400px;
+	border: 1px solid #999;
+}

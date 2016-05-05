@@ -1,0 +1,11 @@
+.gallery {
+	width: 1000px;
+	margin: 0 auto; 
+	border: 1px solid #999;
+}
+.container {
+	width: 800px;
+	height: 500px;
+	border: 1px solid black;
+	margin: 0 auto;
+}
